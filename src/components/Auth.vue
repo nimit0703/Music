@@ -81,12 +81,14 @@
             </button>
           </form>
           <!-- Registration Form -->
+          <div class="text-white text-center font-bold p-4 rounded mb-4" v-if="reg_show_alert"
+          :class="reg_alert_varient"
+          >{{ reg_alert_msg }}</div>
           <vee-form
             v-show="tab === 'register'"
             :validation-schema="schema"
             @submit="register"
-            :initial-values="userData"
-          >
+            :initial-values="userData" >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
@@ -165,7 +167,8 @@
             <button
               type="submit"
               class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-            >
+              :disabled="reg_in_submission"
+              >
               Submit
             </button>
           </vee-form>
@@ -195,7 +198,11 @@ export default {
       },
       userData: {
         country: 'USA'
-      }
+      },
+      reg_in_submission: false,
+      reg_show_alert: false,
+      reg_alert_varient: 'bg-blue-500',
+      reg_alert_msg: 'Please wait! your acount is being creating'
     }
   },
   computed: {
@@ -206,7 +213,11 @@ export default {
   },
   methods: {
     register(values: object) {
-      console.log(values)
+      this.reg_show_alert=true;
+      this.reg_in_submission=true;
+      this.reg_alert_varient="bg-green-500";
+      this.reg_alert_msg = "done";
+      console.log(values);
     }
   }
 }

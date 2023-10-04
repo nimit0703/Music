@@ -49,7 +49,11 @@ export default {
         const message = messages[ruleName] ? messages[ruleName] : 'Invalid'
 
         return message
-      }
+      },
+      validateOnBlur:true,
+      validateOnChange:true,
+      validateOnInput:false,
+      validateOnModelUpdate:true,
     })
   }
 }
