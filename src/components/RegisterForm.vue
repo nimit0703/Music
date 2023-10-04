@@ -1,16 +1,5 @@
 <template>
-  <div
-    class="text-white text-center font-bold p-4 rounded mb-4"
-    v-if="reg_show_alert"
-    :class="reg_alert_varient">
-    {{ reg_alert_msg }}
-  </div>
-
-  <vee-form
-    
-    :validation-schema="schema"
-    @submit="register"
-    :initial-values="userData">
+  <vee-form :validation-schema="schema" @submit="register" :initial-values="userData">
     <!-- Name -->
     <div class="mb-3">
       <label class="inline-block mb-2">Name</label>
@@ -97,7 +86,7 @@
 </template>
 
 <script lang="ts">
-
+import firebase from '@/includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -122,12 +111,21 @@ export default {
     }
   },
   methods: {
-    register(values: object) {
+    async register(values: any) {
       this.reg_show_alert = true
       this.reg_in_submission = true
       this.reg_alert_varient = 'bg-green-500'
       this.reg_alert_msg = 'done'
-      console.log(values)
+      let userCred = null;
+      try {
+        userCred = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(values.email, values.password)
+      } catch (error) {
+        console.log('error occored')
+        return;
+      }
+      console.log(userCred);
     }
   }
 }

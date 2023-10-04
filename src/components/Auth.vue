@@ -73,13 +73,13 @@ export default {
   },
   data() {
     return {
-      tab: 'login'
+      tab: 'login',
     }
   },
   computed: {
     ...mapState(useModalStore, ['hiddenClass']),
     ...mapWritableState(useModalStore, {
-      modelVisiblity: 'isOpen'
+      modelVisiblity: 'isOpen',
     })
   },
   methods: {}
