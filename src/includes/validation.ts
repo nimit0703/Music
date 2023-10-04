@@ -1,4 +1,10 @@
-import { Form as VeeForm, Field as VeeField, defineRule, ErrorMessage } from 'vee-validate'
+import {
+  Form as VeeForm,
+  Field as VeeField,
+  defineRule,
+  ErrorMessage,
+  configure
+} from 'vee-validate'
 
 import {
   required,
@@ -13,7 +19,7 @@ import {
 } from '@vee-validate/rules'
 
 export default {
-  install(app:any) {
+  install(app: any) {
     app.component('veeForm', VeeForm)
     app.component('VeeField', VeeField)
     app.component('ErrorMessage', ErrorMessage)
@@ -27,5 +33,23 @@ export default {
     defineRule('max_value', maxValue)
     defineRule('confirmed', confirmed)
     defineRule('not_one_of', notOneOf)
+
+    configure({
+      generateMessage: (ctx) => {
+        const messages: { [key: string]: string } = {
+          required: `The Field ${ctx.field} is reqired`,
+          min: `The Field ${ctx.field} is too short`,
+          max: `The Field ${ctx.field} is too long`,
+          alpha_spaces: `The Field ${ctx.field} can have alphabet and spaces`,
+          email: `The Field ${ctx.field} must be valid email`
+        }
+
+        const ruleName = ctx.rule?.name ?? 'unknown' // Use a default value if ctx.rule or ctx.rule.name is undefined
+
+        const message = messages[ruleName] ? messages[ruleName] : 'Invalid'
+
+        return message
+      }
+    })
   }
 }

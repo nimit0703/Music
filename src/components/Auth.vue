@@ -20,7 +20,7 @@
           <div class="flex justify-between items-center pb-4">
             <p class="text-2xl font-bold">Your Account</p>
             <!-- Modal Close Button -->
-            <div class="modal-close cursor-pointer z-50" @click.prevent="modelVisiblity =false">
+            <div class="modal-close cursor-pointer z-50" @click.prevent="modelVisiblity = false">
               <i class="fas fa-times"></i>
             </div>
           </div>
@@ -30,23 +30,31 @@
             <li class="flex-auto text-center">
               <a
                 class="block rounded py-3 px-4 transition"
-                :class="{'hover:text-white text-white bg-blue-600':tab ==='login',
-                          'hover:text-blue-600': tab ==='register'
-                      }"
-                href="#" @click.prevent="tab ='login'"
+                :class="{
+                  'hover:text-white text-white bg-blue-600': tab === 'login',
+                  'hover:text-blue-600': tab === 'register'
+                }"
+                href="#"
+                @click.prevent="tab = 'login'"
                 >Login</a
               >
             </li>
             <li class="flex-auto text-center">
-              <a class="block rounded py-3 px-4 transition"
-              :class="{'hover:text-white text-white bg-blue-600':tab ==='register',
-                          'hover:text-blue-600': tab ==='login'
-                      }" href="#" @click.prevent="tab = 'register'">Register</a>
+              <a
+                class="block rounded py-3 px-4 transition"
+                :class="{
+                  'hover:text-white text-white bg-blue-600': tab === 'register',
+                  'hover:text-blue-600': tab === 'login'
+                }"
+                href="#"
+                @click.prevent="tab = 'register'"
+                >Register</a
+              >
             </li>
           </ul>
 
           <!-- Login Form -->
-          <form v-show="tab==='login'">
+          <form v-show="tab === 'login'">
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
@@ -73,64 +81,73 @@
             </button>
           </form>
           <!-- Registration Form -->
-          <vee-form v-show="tab==='register'" :validation-schema="schema"
-          @submit="register">
+          <vee-form
+            v-show="tab === 'register'"
+            :validation-schema="schema"
+            @submit="register"
+            :initial-values="userData"
+          >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
-              <vee-field name="name"
+              <vee-field
+                name="name"
                 type="text"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Enter Name"
               />
-              <ErrorMessage class="text-red-600" name="name"/>
+              <ErrorMessage class="text-red-600" name="name" />
             </div>
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
-              <vee-field name="email"
-              type="email"
-              class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-              placeholder="Enter Email"
+              <vee-field
+                name="email"
+                type="email"
+                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+                placeholder="Enter Email"
               />
-              <ErrorMessage class="text-red-600" name="email"/>
+              <ErrorMessage class="text-red-600" name="email" />
             </div>
             <!-- Age -->
             <div class="mb-3">
               <label class="inline-block mb-2">Age</label>
-              <vee-field name="age"
+              <vee-field
+                name="age"
                 type="number"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
               />
-              <ErrorMessage class="text-red-600" name="age"/>
-
+              <ErrorMessage class="text-red-600" name="age" />
             </div>
             <!-- Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Password</label>
-              <vee-field name="password"
+              <vee-field
+                name="password"
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Password"
+                :bails="false"
               />
-              <ErrorMessage class="text-red-600"  name="password"/>
-
+              <ErrorMessage class="text-red-600" name="password" />
             </div>
             <!-- Confirm Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Confirm Password</label>
-              <vee-field name="confirmed_password"
+              <vee-field
+                name="confirmed_password"
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Confirm Password"
               />
-              <ErrorMessage class="text-red-600"  name="confirmed_password"/>
-
+              <ErrorMessage class="text-red-600" name="confirmed_password" />
             </div>
             <!-- Country -->
             <div class="mb-3">
               <label class="inline-block mb-2">Country</label>
-              <vee-field as="select" name="country"
+              <vee-field
+                as="select"
+                name="country"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
               >
                 <option value="USA">USA</option>
@@ -138,8 +155,7 @@
                 <option value="Germany">Germany</option>
                 <option value="Canada">Canada</option>
               </vee-field>
-              <ErrorMessage class="text-red-600"  name="country"/>
-
+              <ErrorMessage class="text-red-600" name="country" />
             </div>
             <!-- TOS -->
             <div class="mb-3 pl-6">
@@ -160,33 +176,36 @@
 </template>
 
 <script lang="ts">
-import {mapState,mapWritableState} from 'pinia';
-import useModalStore from "@/stores/modal";
+import { mapState, mapWritableState } from 'pinia'
+import useModalStore from '@/stores/modal'
 
 export default {
   name: 'Auth',
-  data(){
-    return{
-      tab:'login',
-      schema:{
-        name:'required|min:3|max:25|alpha_spaces',
-        email:"required|email",
-        age:"required|min_value:5|max_value:135",
-        password:"required|min:3|max:25",
-        confirmed_password:"confirmed:@password",
-        country:"required|not_one_of:Canada",
-        tos:"",
+  data() {
+    return {
+      tab: 'login',
+      schema: {
+        name: 'required|min:3|max:25|alpha_spaces',
+        email: 'required|email',
+        age: 'required|min_value:5|max_value:135',
+        password: 'required|min:3|max:25',
+        confirmed_password: 'confirmed:@password',
+        country: 'required|not_one_of:Canada',
+        tos: ''
+      },
+      userData: {
+        country: 'USA'
       }
     }
   },
-  computed:{
-    ...mapState(useModalStore,['hiddenClass']),
-    ...mapWritableState(useModalStore,{
-      modelVisiblity:'isOpen',
-    }),
+  computed: {
+    ...mapState(useModalStore, ['hiddenClass']),
+    ...mapWritableState(useModalStore, {
+      modelVisiblity: 'isOpen'
+    })
   },
-  methods:{
-    register(values:object){
+  methods: {
+    register(values: object) {
       console.log(values)
     }
   }
