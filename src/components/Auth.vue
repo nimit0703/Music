@@ -60,28 +60,29 @@
 </template>
 
 <script lang="ts">
-import { mapState, mapWritableState } from 'pinia'
-import useModalStore from '@/stores/modal'
+import { useStore } from 'vuex';
+
 import RegisterForm from './RegisterForm.vue'
 import LoginForm from './LoginForm.vue'
 
 export default {
   name: 'Auth',
+  store :useStore(),
   components: {
     RegisterForm,
     LoginForm
   },
-  data() {
-    return {
-      tab: 'login',
+  setup(){
+
+    const store = useStore();
+    const hiddenClass = store.getters.hiddenClass;
+    const modelVisiblity = store.state.isOpen;
+    const tab = 'login';
+    return{
+      hiddenClass,
+      tab,
+      modelVisiblity,
     }
-  },
-  computed: {
-    ...mapState(useModalStore, ['hiddenClass']),
-    ...mapWritableState(useModalStore, {
-      modelVisiblity: 'isOpen',
-    })
-  },
-  methods: {}
+  }
 }
 </script>
