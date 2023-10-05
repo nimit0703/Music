@@ -7,13 +7,12 @@
 
       <div class="flex flex-grow items-center">
         <!-- Primary Navigation -->
-        <p>{{ fun }}</p>
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
           <li>
-            <!-- <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal" -->
-              <!-- >Login / Register</a -->
-            <!-- > -->
+            <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"
+              >Login / Register</a
+            >
           </li>
           <li>
             <a class="px-2 text-white" href="#">Manage</a>
@@ -30,23 +29,18 @@ import { ref } from 'vue'
 
 export default {
   name: 'AppHeader',
-  computed:{
-    fun(){
-      return this.$store.state.isOpen;
+  setup() {
+    const store = useStore();
+    const isOpen = ref(store.state.isOpen)
+
+    function toggleAuthModal() {
+      isOpen.value = !isOpen.value
+      console.log(isOpen.value)
+    }
+    return {
+      isOpen,
+      toggleAuthModal
     }
   }
-  // setup() {
-  //   const store = useStore();
-  //   const isOpen = ref(store.state.isOpen)
-
-  //   function toggleAuthModal() {
-  //     isOpen.value = !isOpen.value
-  //     console.log(isOpen.value)
-  //   }
-  //   return {
-  //     isOpen,
-  //     toggleAuthModal
-  //   }
-  // }
 }
 </script>
